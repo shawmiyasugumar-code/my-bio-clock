@@ -46,7 +46,7 @@ if st.button("Generate Bio-Age Report"):
     
     st.markdown("---")
     st.subheader(f"📊 Longevity Audit Report for {patient_name}")
-    st.metric(label="Calculated Biological Age", value=f"{round(calculated_bio_age, 1)} Years Old")
+    st.metric(label="Calculated Biological Age", value=f"{round(calculated_bio_age[0], 1)} Years Old")
     
     if client_glucose > 125:
         st.error("⚠️ Metabolic Status: Elevated / Diabetic Range")
