@@ -113,7 +113,7 @@ if st.button("Generate Bio-Age Report"):
         
     st.markdown("---")
     st.caption("⚠️ DEMO VERSION ONLY - NOT FOR CLINICAL USE. This website is currently under development for an academic validation project. Do not input real medical patient records.")
-        new_client_data = pd.DataFrame([[client_albumin, client_glucose, client_hs_crp]], columns=['Albumin', 'Glucose', 'hs_CRP'])
+    new_client_data = pd.DataFrame([[client_albumin, client_glucose, client_hs_crp]], columns=['Albumin', 'Glucose', 'hs_CRP'])
     calculated_bio_age = ai_clock.predict(new_client_data)
     final_bio_age = round(calculated_bio_age, 1)
     
