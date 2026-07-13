@@ -44,78 +44,8 @@ if st.button("Generate Bio-Age Report"):
     new_client_data = pd.DataFrame([[client_albumin, client_glucose, client_hs_crp]], columns=['Albumin', 'Glucose', 'hs_CRP'])
     calculated_bio_age = ai_clock.predict(new_client_data)
     
-    st.markdown("---")
-    st.subheader(f"📊 Longevity Audit Report for {patient_name}")
-    st.metric(label="Calculated Biological Age", value=f"{round(calculated_bio_age[0], 1)} Years Old")
-    
-    if client_glucose > 125:
-        st.error("⚠️ Metabolic Status: Elevated / Diabetic Range")
-        st.write("**Dietary Management Protocol (Based on ADA Guidelines):**")
-        st.write("- **Breakfast:** Oatmeal, egg whites, or ragi idiyappam. Avoid white bread and sugary tea.")
-        st.write("- **Lunch:** Small portion of red rice with heavy green vegetables and fish/chicken. Avoid potatoes.")
-        st.write("- **Exercise:** 15-20 minutes of brisk walking immediately after meals.")
-    else:
-        st.success("✅ Metabolic Status: Normal Range")
-        st.write("Maintain current healthy lifestyle and balanced diet.")
-        
-    st.markdown("---")
-    st.caption("⚠️ DEMO VERSION ONLY - NOT FOR CLINICAL USE. This website is currently under development for an academic validation project. Do not input real medical patient records.")
-    new_client_data = pd.DataFrame([[client_albumin, client_glucose, client_hs_crp]], columns=['Albumin', 'Glucose', 'hs_CRP'])
-    calculated_bio_age = ai_clock.predict(new_client_data)
+    # FIXED: Added [0] to extract the single number from the array before rounding
     final_bio_age = round(calculated_bio_age[0], 1)
-    
-    st.markdown("---")
-    st.subheader(f"📊 Longevity Audit Report for {patient_name}")
-    st.metric(label="Calculated Biological Age", value=f"{final_bio_age} Years Old")
-    
-    diet_plan_text = ""
-    if client_glucose > 125:
-        st.error("⚠️ Metabolic Status: Elevated / Diabetic Range")
-        st.write("**Dietary Management Protocol (Based on ADA Guidelines):**")
-        st.write("- **Breakfast:** Oatmeal, egg whites, or ragi idiyappam. Avoid white bread and sugary tea.")
-        st.write("- **Lunch:** Small portion of red rice with heavy green vegetables and fish/chicken. Avoid potatoes.")
-        st.write("- **Exercise:** 15-20 minutes of brisk walking immediately after meals.")
-        
-        diet_plan_text = (
-            "Status: Elevated / Diabetic Range\n"
-            "- Breakfast: Oatmeal, egg whites, or ragi idiyappam. Avoid white bread and sugary tea.\n"
-            "- Lunch: Small portion of red rice with heavy green vegetables and fish/chicken. Avoid potatoes.\n"
-            "- Exercise: 15-20 minutes of brisk walking immediately after meals."
-        )
-    else:
-        st.success("✅ Metabolic Status: Normal Range")
-        st.write("Maintain current healthy lifestyle and balanced diet.")
-        diet_plan_text = "Status: Normal Range\nMaintain current healthy lifestyle and balanced diet."
-        
-    st.markdown("---")
-    st.subheader("📩 Download Official Client Report")
-    
-    report_content = (
-        f"BIOLOGICAL AGE & LONGEVITY AUDIT REPORT\n"
-        f"--------------------------------------\n"
-        f"Patient Name: {patient_name}\n"
-        f"Chronological Age: {client_age} Years Old\n"
-        f"Calculated Biological Age: {final_bio_age} Years Old\n\n"
-        f"METABOLIC STATUS & DIETARY MANAGEMENT PROTOCOL\n"
-        f"---------------------------------------------\n"
-        f"{diet_plan_text}\n\n"
-        f"IMPORTANT CLINICAL DISCLAIMER:\n"
-        f"This report is for educational and wellness purposes only. It is NOT a medical prescription. "
-        f"Always consult a physician before making changes."
-    )
-    
-    st.download_button(
-        label="Download Full Clinical Report PDF",
-        data=report_content,
-        file_name=f"{patient_name}_Longevity_Report.txt",
-        mime="text/plain"
-    )
-        
-    st.markdown("---")
-    st.caption("⚠️ DEMO VERSION ONLY - NOT FOR CLINICAL USE. This website is currently under development for an academic validation project. Do not input real medical patient records.")
-    new_client_data = pd.DataFrame([[client_albumin, client_glucose, client_hs_crp]], columns=['Albumin', 'Glucose', 'hs_CRP'])
-    calculated_bio_age = ai_clock.predict(new_client_data)
-    final_bio_age = round(calculated_bio_age, 1)
     
     st.markdown("---")
     st.subheader(f"📊 Longevity Audit Report for {patient_name}")
@@ -179,6 +109,5 @@ if st.button("Generate Bio-Age Report"):
         mime="text/plain"
     )
         
-    st.markdown("---")
-    st.caption("⚠️ DEMO VERSION ONLY - NOT FOR CLINICAL USE. This website is currently under development for an academic validation project. Do not input real medical patient records.")
-
+st.markdown("---")
+st.caption("⚠️ DEMO VERSION ONLY - NOT FOR CLINICAL USE. This website is currently under development for an academic validation project. Do not input real medical patient records.")
