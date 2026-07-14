@@ -66,7 +66,7 @@ class LuxuryPDF(FPDF):
 if st.button("Generate Bio-Age Report"):
     new_client_data = pd.DataFrame([[client_albumin, client_glucose, client_hs_crp]], columns=['Albumin', 'Glucose', 'hs_CRP'])
     calculated_bio_age = ai_clock.predict(new_client_data)
-    final_bio_age = round(calculated_bio_age, 1)
+    final_bio_age = round(calculated_bio_age[0], 1)
     
     st.markdown("---")
     st.subheader(f"📊 Longevity Audit Report for {patient_name if patient_name else 'Valued Client'}")
