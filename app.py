@@ -33,11 +33,12 @@ ai_clock = train_ai_model()
 
 # 3. Clinical Data Input Fields
 st.markdown("### 📋 Patient Biomarker Data Input")
-patient_name = st.text_input("Patient Name", "Sithara")
-client_age = st.number_input("Chronological Age (Passport Age)", min_value=1, max_value=120, value=69)
-client_albumin = st.number_input("Albumin Level (g/dL)", min_value=1.0, max_value=10.0, value=4.2)
-client_glucose = st.number_input("Fasting Glucose Level (mg/dL)", min_value=30.0, max_value=500.0, value=132.0)
-client_hs_crp = st.number_input("C-Reactive Protein / hs-CRP (mg/L)", min_value=0.0, max_value=50.0, value=3.5)
+st.markdown("### 📋 Patient Biomarker Data Input")
+patient_name = st.text_input("Patient Name", value="")
+client_age = st.number_input("Chronological Age (Passport Age)", min_value=1, max_value=120, value=30)
+client_albumin = st.number_input("Albumin Level (g/dL)", min_value=1.0, max_value=10.0, value=4.0)
+client_glucose = st.number_input("Fasting Glucose Level (mg/dL)", min_value=30.0, max_value=500.0, value=90.0)
+client_hs_crp = st.number_input("C-Reactive Protein / hs-CRP (mg/L)", min_value=0.0, max_value=50.0, value=1.0)
 
 # 4. Automated Report Generation Logic
 if st.button("Generate Bio-Age Report"):
