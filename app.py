@@ -151,6 +151,36 @@ if st.button("Generate Bio-Age Report"):
         "<div class='metric-box'>"
         "<div class='section-title'>3. ORGAN VITALITY ANALYSIS (Serum Albumin)</div>"
         f"<span class='badge' style='background-color: {albumin_badge};'>{albumin_level}</span>")
+        # Generating the downloadable custom report content
+    report_content = (
+        f"BIOLOGICAL AGE & LONGEVITY AUDIT REPORT\n"
+        f"--------------------------------------\n"
+        f"Patient Name: {patient_name if patient_name else 'Valued Client'}\n"
+        f"Chronological Age: {client_age} Years Old\n"
+        f"Calculated Biological Age: {final_bio_age} Years Old\n\n"
+        f"1. METABOLIC STATE ANALYSIS\n"
+        f"---------------------------\n"
+        f"Fasting Glucose: {client_glucose} mg/dL\n"
+        f"Classification: {glucose_level}\n"
+        f"Insight: {glucose_insight}\n"
+        f"Control Rule: {glucose_control}\n\n"
+        f"2. INFLAMMATORY STATE ANALYSIS\n"
+        f"------------------------------\n"
+        f"Current hs-CRP: {client_hs_crp} mg/L\n"
+        f"Classification: {crp_level}\n"
+        f"Insight: {crp_insight}\n"
+        f"Control Rule: {crp_control}\n\n"
+        f"3. ORGAN VITALITY ANALYSIS\n"
+        f"--------------------------\n"
+        f"Serum Albumin: {client_albumin} g/dL\n"
+        f"Classification: {albumin_level}\n"
+        f"Insight: {albumin_insight}\n"
+        f"Control Rule: {albumin_control}\n\n"
+        f"IMPORTANT CLINICAL DISCLAIMER:\n"
+        f"This automated digital analysis is for educational and wellness tracking purposes only. "
+        f"It does not constitute a specific medical prescription or dietary plan. Always consult a physician."
+    )
+
     st.markdown("---")
 st.subheader("📩 Download Official Client Report")
 st.download_button(
