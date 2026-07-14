@@ -150,4 +150,4 @@ if st.button("Generate Bio-Age Report"):
         "</div>"
         "<div class='metric-box'>"
         "<div class='section-title'>3. ORGAN VITALITY ANALYSIS (Serum Albumin)</div>"
-        f"<span class='badge' style='background-color: {albumin_badge};'>{albumin_level}</span>"
+        f"<span class='badge' style='background-color: {albumin_badge};'>{albumin_level}</span>")
