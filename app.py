@@ -151,3 +151,12 @@ if st.button("Generate Bio-Age Report"):
         "<div class='metric-box'>"
         "<div class='section-title'>3. ORGAN VITALITY ANALYSIS (Serum Albumin)</div>"
         f"<span class='badge' style='background-color: {albumin_badge};'>{albumin_level}</span>")
+    st.markdown("---")
+st.subheader("📩 Download Official Client Report")
+st.download_button(
+    label="Download Full Clinical Report PDF",
+    data=report_content,
+    file_name=f"{patient_name if patient_name else 'Client'}_Longevity_Report.txt",
+    mime="text/plain"
+)
+
