@@ -33,7 +33,6 @@ ai_clock = train_ai_model()
 
 # 3. Clinical Data Input Fields
 st.markdown("### 📋 Patient Biomarker Data Input")
-st.markdown("### 📋 Patient Biomarker Data Input")
 patient_name = st.text_input("Patient Name", value="")
 client_age = st.number_input("Chronological Age (Passport Age)", min_value=1, max_value=120, value=30)
 client_albumin = st.number_input("Albumin Level (g/dL)", min_value=1.0, max_value=10.0, value=4.0)
