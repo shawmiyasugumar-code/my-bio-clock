@@ -185,4 +185,4 @@ if st.button("Generate Bio-Age Report"):
     st.subheader("📩 Download Official Professional PDF")
     st.download_button(
         label="Download Professional Luxury PDF Report",
-        data=bytes(pdf_output),
+        data=bytes(pdf_output),)
