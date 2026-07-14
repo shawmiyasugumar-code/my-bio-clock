@@ -116,47 +116,38 @@ if st.button("Generate Bio-Age Report"):
     st.write(f"**Physiological Insight:** {albumin_insight}")
     st.write(f"**Actionable Control Protocol:** {albumin_control}")
 
-    # --- FIXED & VERIFIED AUTOMATED COLOR REPORT TEXT GENERATION ---
-    html_report = f"""<html>
-<head>
-<style>
-body {{ font-family: Arial, sans-serif; background-color: #0a192f; color: #ffffff; padding: 30px; }}
-.header {{ text-align: center; border-bottom: 2px solid #c5a059; padding-bottom: 15px; margin-bottom: 25px; }}
-.title {{ color: #c5a059; font-size: 26px; font-weight: bold; }}
-.meta-info {{ font-size: 15px; color: #8892b0; margin-top: 8px; }}
-.box {{ background-color: #112240; border-radius: 6px; padding: 15px; margin-bottom: 20px; border-left: 5px solid #c5a059; }}
-.sect-title {{ font-size: 18px; color: #c5a059; font-weight: bold; margin-bottom: 8px; }}
-.badge {{ display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: bold; color: #ffffff; margin-bottom: 8px; }}
-.txt {{ font-size: 14px; color: #e2e8f0; margin-bottom: 6px; }}
-.prot {{ font-size: 14px; color: #64ffda; font-style: italic; }}
-.disc {{ font-size: 11px; color: #8892b0; text-align: justify; margin-top: 35px; border-top: 1px solid #233554; padding-top: 12px; }}
-</style>
-</head>
-<body>
-<div class="header">
-<div class="title">BIOLOGICAL AGE & LONGEVITY AUDIT</div>
-<div class="meta-info">
-<strong>Patient Name:</strong> {patient_name if patient_name else 'Valued Client'} &nbsp;|&nbsp; 
-<strong>Chronological Age:</strong> {client_age} Years &nbsp;|&nbsp; 
-<strong>Calculated Biological Age:</strong> {final_bio_age} Years
-</div>
-</div>
-<div class="box">
-<div class="sect-title">1. METABOLIC ANALYSIS (Fasting Glucose)</div>
-<span class="badge" style="background-color: {glucose_badge};">{glucose_level}</span>
-<div class="txt"><strong>Physiological Insight:</strong> {glucose_insight}</div>
-<div class="prot"><strong>Actionable Control Protocol:</strong> {glucose_control}</div>
-</div>
-<div class="box">
-<div class="sect-title">2. INFLAMMATORY ANALYSIS (hs-CRP)</div>
-<span class="badge" style="background-color: {crp_badge};">{crp_level}</span>
-<div class="txt"><strong>Physiological Insight:</strong> {crp_insight}</div>
-<div class="prot"><strong>Actionable Control Protocol:</strong> {crp_control}</div>
-</div>
-<div class="box">
-<div class="sect-title">3. ORGAN VITALITY ANALYSIS (Serum Albumin)</div>
-<span class="badge" style="background-color: {albumin_badge};">{albumin_level}</span>
-<div class="txt"><strong>Physiological Insight:</strong> {albumin_insight}</div>
-<div class="prot"><strong>Actionable Control Protocol:</strong> {albumin_control}</div>
-</div>
-<div class="disc">
+    # --- GENERATING BEAUTIFUL COLOURFUL PDF REPORT ---
+    display_name = patient_name if patient_name else 'Valued Client'
+    
+    html_report = (
+        "<html><head><style>"
+        "body { font-family: Arial, sans-serif; background-color: #0a192f; color: #ffffff; padding: 30px; }"
+        ".header { text-align: center; border-bottom: 2px solid #c5a059; padding-bottom: 15px; margin-bottom: 25px; }"
+        ".title { color: #c5a059; font-size: 26px; font-weight: bold; }"
+        ".meta-info { font-size: 15px; margin-top: 10px; color: #8892b0; }"
+        ".metric-box { background-color: #112240; border-radius: 6px; padding: 15px; margin-bottom: 20px; border-left: 5px solid #c5a059; }"
+        ".section-title { font-size: 18px; color: #c5a059; margin-bottom: 8px; font-weight: bold; }"
+        ".badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: bold; color: #ffffff; margin-bottom: 8px; }"
+        ".insight { font-size: 14px; color: #e2e8f0; margin-bottom: 8px; }"
+        ".protocol { font-size: 14px; color: #64ffda; font-style: italic; }"
+        ".disclaimer { font-size: 11px; color: #8892b0; text-align: justify; margin-top: 35px; border-top: 1px solid #233554; padding-top: 12px; }"
+        "</style></head><body>"
+        "<div class='header'>"
+        "<div class='title'>BIOLOGICAL AGE & LONGEVITY AUDIT</div>"
+        f"<div class='meta-info'><strong>Patient Name:</strong> {display_name} &nbsp;|&nbsp; <strong>Chronological Age:</strong> {client_age} Years &nbsp;|&nbsp; <strong>Calculated Biological Age:</strong> {final_bio_age} Years</div>"
+        "</div>"
+        "<div class='metric-box'>"
+        "<div class='section-title'>1. METABOLIC ANALYSIS (Fasting Glucose)</div>"
+        f"<span class='badge' style='background-color: {glucose_badge};'>{glucose_level}</span>"
+        f"<div class='insight'><strong>Physiological Insight:</strong> {glucose_insight}</div>"
+        f"<div class='protocol'><strong>Actionable Control Protocol:</strong> {glucose_control}</div>"
+        "</div>"
+        "<div class='metric-box'>"
+        "<div class='section-title'>2. INFLAMMATORY ANALYSIS (hs-CRP)</div>"
+        f"<span class='badge' style='background-color: {crp_badge};'>{crp_level}</span>"
+        f"<div class='insight'><strong>Physiological Insight:</strong> {crp_insight}</div>"
+        f"<div class='protocol'><strong>Actionable Control Protocol:</strong> {crp_control}</div>"
+        "</div>"
+        "<div class='metric-box'>"
+        "<div class='section-title'>3. ORGAN VITALITY ANALYSIS (Serum Albumin)</div>"
+        f"<span class='badge' style='background-color: {albumin_badge};'>{albumin_level}</span>"
