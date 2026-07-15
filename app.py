@@ -120,43 +120,123 @@ if st.button("Generate Bio-Age Report"):
     st.write(f"**Actionable Control Protocol:** {albumin_control}")
 
     # Generating the downloadable custom report content (Safely Inside the Button block)
-    report_content = (
-        f"BIOLOGICAL AGE & LONGEVITY AUDIT REPORT\n"
-        f"--------------------------------------\n"
-        f"Patient Name: {patient_name if patient_name else 'Valued Client'}\n"
-        f"Chronological Age: {client_age} Years Old\n"
-        f"Calculated Biological Age: {final_bio_age} Years Old\n\n"
-        f"1. METABOLIC STATE ANALYSIS\n"
-        f"---------------------------\n"
-        f"Fasting Glucose: {client_glucose} mg/dL\n"
-        f"Classification: {glucose_level}\n"
-        f"Insight: {glucose_insight}\n"
-        f"Control Rule: {glucose_control}\n\n"
-        f"2. INFLAMMATORY STATE ANALYSIS\n"
-        f"------------------------------\n"
-        f"Current hs-CRP: {client_hs_crp} mg/L\n"
-        f"Classification: {crp_level}\n"
-        f"Insight: {crp_insight}\n"
-        f"Control Rule: {crp_control}\n\n"
-        f"3. ORGAN VITALITY ANALYSIS\n"
-        f"--------------------------\n"
-        f"Serum Albumin: {client_albumin} g/dL\n"
-        f"Classification: {albumin_level}\n"
-        f"Insight: {albumin_insight}\n"
-        f"Control Rule: {albumin_control}\n\n"
-        f"IMPORTANT CLINICAL DISCLAIMER:\n"
-        f"This automated digital analysis is for educational and wellness tracking purposes only. "
-        f"It does not constitute a specific medical prescription or dietary plan. Always consult a physician."
-    )
-    
+       # Luxury Layout with Dark Navy Blue background and Gold text accents
+    html_report = f"""
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            body {{
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                background-color: #0a192f;
+                color: #ffffff;
+                padding: 40px;
+            }}
+            .header {{
+                text-align: center;
+                border-bottom: 2px solid #c5a059;
+                padding-bottom: 20px;
+                margin-bottom: 30px;
+            }}
+            .title {{
+                color: #c5a059;
+                font-size: 28px;
+                font-weight: bold;
+                letter-spacing: 1px;
+            }}
+            .meta-info {{
+                font-size: 16px;
+                margin-top: 10px;
+                color: #8892b0;
+            }}
+            .metric-box {{
+                background-color: #112240;
+                border-radius: 8px;
+                padding: 20px;
+                margin-bottom: 25px;
+                border-left: 5px solid #c5a059;
+            }}
+            .section-title {{
+                font-size: 20px;
+                color: #c5a059;
+                margin-bottom: 10px;
+                font-weight: bold;
+            }}
+            .badge {{
+                display: inline-block;
+                padding: 6px 12px;
+                border-radius: 4px;
+                font-size: 14px;
+                font-weight: bold;
+                color: #ffffff;
+                margin-bottom: 10px;
+            }}
+            .insight {{
+                font-size: 15px;
+                line-height: 1.6;
+                color: #e2e8f0;
+                margin-bottom: 10px;
+            }}
+            .protocol {{
+                font-size: 15px;
+                line-height: 1.6;
+                color: #64ffda;
+                font-style: italic;
+            }}
+            .disclaimer {{
+                font-size: 12px;
+                color: #8892b0;
+                text-align: justify;
+                margin-top: 40px;
+                border-top: 1px solid #233554;
+                padding-top: 15px;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <div class="title">BIOLOGICAL AGE & LONGEVITY AUDIT</div>
+            <div class="meta-info">
+                <strong>Patient Name:</strong> {patient_name if patient_name else 'Valued Client'} &nbsp;|&nbsp; 
+                <strong>Chronological Age:</strong> {client_age} Years &nbsp;|&nbsp; 
+                <strong>Calculated Biological Age:</strong> {final_bio_age} Years
+            </div>
+        </div>
+
+        <div class="metric-box">
+            <div class="section-title">1. METABOLIC ANALYSIS (Fasting Glucose)</div>
+            <div class="insight"><strong>Physiological Insight:</strong> {glucose_insight}</div>
+            <div class="protocol"><strong>Actionable Control Protocol:</strong> {glucose_control}</div>
+        </div>
+
+        <div class="metric-box">
+            <div class="section-title">2. INFLAMMATORY ANALYSIS (hs-CRP)</div>
+            <div class="insight"><strong>Physiological Insight:</strong> {crp_insight}</div>
+            <div class="protocol"><strong>Actionable Control Protocol:</strong> {crp_control}</div>
+        </div>
+
+        <div class="metric-box">
+            <div class="section-title">3. ORGAN VITALITY ANALYSIS (Serum Albumin)</div>
+            <div class="insight"><strong>Physiological Insight:</strong> {albumin_insight}</div>
+            <div class="protocol"><strong>Actionable Control Protocol:</strong> {albumin_control}</div>
+        </div>
+
+        <div class="disclaimer">
+            <strong>IMPORTANT CLINICAL DISCLAIMER:</strong> This automated digital analysis is for educational and longevity wellness tracking purposes only. It does not contain or constitute a medical prescription or specific clinical treatment. Always consult your practicing healthcare provider before initiating lifestyle modifications.
+        </div>
+    </body>
+    </html>
+    """
+
     st.markdown("---")
-    st.subheader("📩 Download Official Client Report")
+    st.subheader("📩 Download Official Professional Color Report")
     st.download_button(
-        label="Download Full Clinical Report PDF",
-        data=report_content,
-        file_name=f"{patient_name if patient_name else 'Client'}_Longevity_Report.txt",
-        mime="text/plain"
+        label="Download Full Clinical Color Report",
+        data=html_report,
+        file_name=f"{patient_name if patient_name else 'Client'}_Longevity_Report.html",
+        mime="text/html"
     )
+
         
 st.markdown("---")
 st.caption("⚠️ DEMO VERSION ONLY - NOT FOR CLINICAL USE. This website is currently under development for an academic validation project. Do not input real medical patient records.")
