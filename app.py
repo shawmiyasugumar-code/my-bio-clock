@@ -196,11 +196,13 @@ if st.button("Generate Bio-Age Report"):
     <body>
         <div class="header">
             <div class="title">BIOLOGICAL AGE & LONGEVITY AUDIT</div>
-            <div class="meta-info">
+                        <div class="meta-info">
+                <strong>Issuing Clinic/Doctor:</strong> {organization_name} <br><br>
                 <strong>Patient Name:</strong> {patient_name if patient_name else 'Valued Client'} &nbsp;|&nbsp; 
                 <strong>Chronological Age:</strong> {client_age} Years &nbsp;|&nbsp; 
                 <strong>Calculated Biological Age:</strong> {final_bio_age} Years
             </div>
+
         </div>
 
         <div class="metric-box">
