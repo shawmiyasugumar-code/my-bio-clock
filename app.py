@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestRegressor
 st.set_page_config(page_title="Longevity Bio-Clock", layout="centered")
 st.title("🧬 Longevity & Anti-Aging Bio-Clock Analytics")
 st.write("Enter patient biomarker data below to analyze clinical risks and biological aging.")
-organization_name = st.text_input("Authorized Clinician / Clinic / Hospital Name", value="")
+organization_name = st.text_input("Authorized Clinician / Clinic / Hospital Name", placeholder="Global Longevity Clinic")
 # 2. AI Computational Engine Setup
 @st.cache_resource
 def train_ai_model():
