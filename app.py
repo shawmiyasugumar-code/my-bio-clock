@@ -6,7 +6,8 @@ from sklearn.ensemble import RandomForestRegressor
 # 1. Website Frontend Configuration
 st.set_page_config(page_title="Longevity Bio-Clock", layout="centered")
 st.title("🧬 Longevity & Anti-Aging Bio-Clock Analytics")
-st.write("Welcome Dr. [Partner]. Enter biomarker data to analyze clinical risks and biological aging.")
+doctor_name = st.text_input("Enter Doctor's Name (e.g., Dr. Smith)", value="Partner")
+st.write(f"Welcome Dr. {doctor_name}. Enter biomarker data to analyze clinical risks and biological aging.")
 
 # 2. AI Computational Engine Setup
 @st.cache_resource
