@@ -74,7 +74,35 @@ if st.button("Generate Bio-Age Report"):
     st.markdown("---")
     st.subheader(f"📊 Longevity Audit Report for {patient_name if patient_name else 'Valued Client'}")
     st.metric(label="Calculated Biological Age", value=f"{final_bio_age} Years Old")
-    
+
+        # Mathematical Gauge Calculation for the Graph
+    age_delta = final_bio_age - client_age
+    if age_delta < -2:
+        gauge_color = "#2ecc71"  # Green (Younger)
+        gauge_label = "YOUNGER THAN PASSPORT AGE (Optimal Cell Health)"
+        gauge_percent = 25
+    elif -2 <= age_delta <= 2:
+        gauge_color = "#f39c12"  # Orange (Matches)
+        gauge_label = "MATCHES PASSPORT AGE (Standard Cellular Aging)"
+        gauge_percent = 50
+    else:
+        gauge_color = "#e74c3c"  # Red (Older)
+        gauge_label = "OLDER THAN PASSPORT AGE (Accelerated Cellular Aging)"
+        gauge_percent = 75
+
+    # Dynamic Visual Gauge Graph using HTML/CSS
+    st.markdown("### 📈 Biological Age Aging Gauge")
+    st.markdown(f"""
+        <div style="width: 100%; background-color: #112240; border-radius: 10px; padding: 20px; border: 1px solid #233554; text-align: center;">
+            <div style="font-size: 16px; color: #8892b0; margin-bottom: 10px; font-weight: bold;">AGING RATE PROFILE</div>
+            <div style="width: 100%; background-color: #233554; border-radius: 20px; height: 25px; position: relative; margin: 15px 0;">
+                <div style="background-color: {gauge_color}; width: {gauge_percent}%; height: 100%; border-radius: 20px;"></div>
+            </div>
+            <div style="font-size: 16px; color: {gauge_color}; font-weight: bold;">{gauge_label}</div>
+            <div style="font-size: 13px; color: #8892b0; margin-top: 5px;">Age Deviation Delta: {round(age_delta, 1)} Years</div>
+        </div>
+    """, unsafe_allow_html=True)
+
     # Clinical Risk Triggers & Data Compiling
     glucose_status = "OPTIMAL" if client_glucose <= 100 else ("SUBOPTIMAL" if client_glucose <= 125 else "CRITICAL")
     crp_status = "OPTIMAL" if client_hs_crp <= 1.0 else ("SUBOPTIMAL" if client_hs_crp <= 3.0 else "CRITICAL")
