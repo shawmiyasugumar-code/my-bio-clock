@@ -119,7 +119,7 @@ if st.button("Generate Bio-Age Report"):
     st.info(f"**Cellular Clock:** WBC: {wbc_status} | Lymphocyte: {lymph_status} | RDW: {rdw_status} | MCV: {mcv_status}")
 
     # Luxury HTML Report Layout
-    html_report = f"""
+   
     <html>
     <head>
         <meta charset="UTF-8">
@@ -179,8 +179,7 @@ if st.button("Generate Bio-Age Report"):
         data=html_report,
         file_name=f"{patient_name if patient_name else 'Client'}_Longevity_Report.html",
         mime="text/html"
-    )
-        
+    )        
 st.markdown("---")
 st.caption("⚠️ DEMO VERSION ONLY - NOT FOR CLINICAL USE. This website is currently under development for an academic validation project. Do not input real medical patient records.")
 
