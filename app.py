@@ -6,9 +6,11 @@ from sklearn.ensemble import RandomForestRegressor
 # 1. Website Frontend Configuration
 st.set_page_config(page_title="Longevity Bio-Clock", layout="centered")
 st.title("🧬 Longevity & Anti-Aging Bio-Clock Analytics")
-st.write("Enter patient biomarker data below to analyze clinical risks and biological aging.")
+st.write("Enter biomarker data below to analyze clinical risks and biological aging.")
+
+# Custom Organization Name Placeholder (The Illusion Box)
 organization_name = st.text_input("Authorized Clinician / Clinic / Hospital Name", placeholder="Global Longevity Clinic")
-# 2. AI Computational Engine Setup
+
 # 2. AI Computational Engine Setup (9-Marker Programmatic Matrix)
 @st.cache_resource
 def train_ai_model():
@@ -67,59 +69,30 @@ if st.button("Generate Bio-Age Report"):
         columns=['Albumin', 'Glucose', 'hs_CRP', 'Creatinine', 'ALP', 'WBC', 'Lymph', 'RDW', 'MCV']
     )
     calculated_bio_age = ai_clock.predict(new_client_data)
-    final_bio_age = round(calculated_bio_age, 1)
+    final_bio_age = round(calculated_bio_age[0], 1)
     
     st.markdown("---")
     st.subheader(f"📊 Longevity Audit Report for {patient_name if patient_name else 'Valued Client'}")
     st.metric(label="Calculated Biological Age", value=f"{final_bio_age} Years Old")
     
-    # Mathematical Gauge Calculation for the Graph
-    age_delta = final_bio_age - client_age
-    if age_delta < -2:
-        gauge_color = "#2ecc71"  # Green
-        gauge_label = "YOUNGER THAN PASSPORT AGE (Optimal Cell Health)"
-        gauge_percent = 25
-    elif -2 <= age_delta <= 2:
-        gauge_color = "#f39c12"  # Orange
-        gauge_label = "MATCHES PASSPORT AGE (Standard Cellular Aging)"
-        gauge_percent = 50
-    else:
-        gauge_color = "#e74c3c"  # Red
-        gauge_label = "OLDER THAN PASSPORT AGE (Accelerated Cellular Aging)"
-        gauge_percent = 75
-
-    # Dynamic Visual Gauge Graph
-    st.markdown("### 📈 Biological Age Aging Gauge")
-    st.markdown(f"""
-        <div style="width: 100%; background-color: #112240; border-radius: 10px; padding: 20px; border: 1px solid #233554; text-align: center;">
-            <div style="font-size: 16px; color: #8892b0; margin-bottom: 10px; font-weight: bold;">AGING RATE PROFILE</div>
-            <div style="width: 100%; background-color: #233554; border-radius: 20px; height: 25px; position: relative; margin: 15px 0;">
-                <div style="background-color: {gauge_color}; width: {gauge_percent}%; height: 100%; border-radius: 20px;"></div>
-            </div>
-            <div style="font-size: 16px; color: {gauge_color}; font-weight: bold;">{gauge_label}</div>
-            <div style="font-size: 13px; color: #8892b0; margin-top: 5px;">Age Deviation Delta: {round(age_delta, 1)} Years</div>
-        </div>
-    """, unsafe_allow_html=True)
-
-    # Reference Ranges logic for 9 Markers
-    glucose_status = "OPTIMAL" if client_glucose <= 100 else ("SUBOPTIMAL (ADA Guideline)" if client_glucose <= 125 else "CRITICAL (ADA Guideline)")
-    crp_status = "OPTIMAL" if client_hs_crp <= 1.0 else ("SUBOPTIMAL (AHA/CDC Criteria)" if client_hs_crp <= 3.0 else "CRITICAL (AHA/CDC Criteria)")
-    albumin_status = "OPTIMAL" if client_albumin > 3.5 else "SUBOPTIMAL (NKF Standard)"
-    kidney_status = "OPTIMAL" if client_creatinine <= 1.2 else "SUBOPTIMAL (NKF Reference)"
-    liver_status = "OPTIMAL" if client_alp <= 147 else "SUBOPTIMAL (Medscape Criteria)"
-    wbc_status = "OPTIMAL" if 4500 <= client_wbc <= 11000 else "SUBOPTIMAL (Cleveland Clinic)"
-    lymph_status = "OPTIMAL" if 20 <= client_lymph <= 40 else "SUBOPTIMAL (NIH Reference)"
-    rdw_status = "OPTIMAL" if client_rdw <= 14.5 else "SUBOPTIMAL (AACC Criteria)"
-    mcv_status = "OPTIMAL" if 80 <= client_mcv <= 100 else "SUBOPTIMAL (Mayo Clinic Reference)"
+    # Clinical Risk Triggers & Data Compiling
+    glucose_status = "OPTIMAL" if client_glucose <= 100 else ("SUBOPTIMAL" if client_glucose <= 125 else "CRITICAL")
+    crp_status = "OPTIMAL" if client_hs_crp <= 1.0 else ("SUBOPTIMAL" if client_hs_crp <= 3.0 else "CRITICAL")
+    albumin_status = "OPTIMAL" if client_albumin > 3.5 else "SUBOPTIMAL"
+    kidney_status = "OPTIMAL" if client_creatinine <= 1.2 else "SUBOPTIMAL"
+    liver_status = "OPTIMAL" if client_alp <= 147 else "SUBOPTIMAL"
+    immune_status = "OPTIMAL" if 4500 <= client_wbc <= 11000 and 20 <= client_lymph <= 40 else "SUBOPTIMAL"
+    blood_status = "OPTIMAL" if client_rdw <= 14.5 and 80 <= client_mcv <= 100 else "SUBOPTIMAL"
 
     st.markdown("### 🩺 Clinical Biomarker Systems Analysis")
-    st.info(f"**Metabolic Control:** Glucose: {glucose_status}")
-    st.info(f"**Inflammatory Status:** hs-CRP: {crp_status}")
-    st.info(f"**Organ Vitality Matrix:** Kidney: {kidney_status} | Liver: {liver_status} | Albumin: {albumin_status}")
-    st.info(f"**Cellular Clock:** WBC: {wbc_status} | Lymphocyte: {lymph_status} | RDW: {rdw_status} | MCV: {mcv_status}")
+    
+    # Simplified Screen Dashboard Display
+    st.info(f"**Metabolic Control (Glucose):** {glucose_status} | **Systemic Inflammation (hs-CRP):** {crp_status}")
+    st.info(f"**Organ Vitality (Albumin/Creatinine/ALP):** Kidney: {kidney_status}, Liver: {liver_status}, Protein Status: {albumin_status}")
+    st.info(f"**Hematological & Immune Clock (WBC/Lymph/RDW/MCV):** Immune Architecture: {immune_status}, Cellular Uniformity: {blood_status}")
 
-    # Luxury HTML Report Layout
-   
+    # Luxury HTML Output Block for direct browser rendering
+    html_report = f"""
     <html>
     <head>
         <meta charset="UTF-8">
@@ -128,13 +101,9 @@ if st.button("Generate Bio-Age Report"):
             .header {{ text-align: center; border-bottom: 2px solid #c5a059; padding-bottom: 20px; margin-bottom: 30px; }}
             .title {{ color: #c5a059; font-size: 26px; font-weight: bold; }}
             .meta-info {{ font-size: 15px; margin-top: 10px; color: #8892b0; line-height: 1.6; }}
-            .graph-container {{ background-color: #112240; border-radius: 8px; padding: 20px; margin-bottom: 25px; text-align: center; border: 1px solid #233554; }}
-            .bar-bg {{ background-color: #233554; border-radius: 15px; height: 20px; width: 100%; margin: 15px 0; }}
-            .bar-fill {{ background-color: {gauge_color}; width: {gauge_percent}%; height: 100%; border-radius: 15px; }}
             .box {{ background-color: #112240; border-radius: 8px; padding: 18px; margin-bottom: 20px; border-left: 4px solid #c5a059; }}
             .sec-title {{ font-size: 18px; color: #c5a059; font-weight: bold; margin-bottom: 8px; }}
             .val {{ color: #64ffda; font-weight: bold; }}
-            .ref-link {{ color: #8892b0; font-size: 12px; font-style: italic; }}
             .disclaimer {{ font-size: 12px; color: #8892b0; text-align: justify; margin-top: 30px; border-top: 1px solid #233554; padding-top: 15px; }}
         </style>
     </head>
@@ -142,44 +111,57 @@ if st.button("Generate Bio-Age Report"):
         <div class="header">
             <div class="title">ADVANCED 9-BIOMARKER LONGEVITY AUDIT</div>
             <div class="meta-info">
-                <strong>Issuing Clinic/Doctor:</strong> {organization_name if organization_name else 'Global Longevity Clinic'} <br>
+                <strong>Issuing Entity:</strong> {organization_name if organization_name else 'Global Longevity Network'} <br>
                 <strong>Patient Name:</strong> {patient_name if patient_name else 'Valued Client'} &nbsp;|&nbsp; 
                 <strong>Chronological Age:</strong> {client_age} Years &nbsp;|&nbsp; 
                 <strong>Calculated Biological Age:</strong> {final_bio_age} Years
             </div>
         </div>
 
-        <div class="graph-container">
-            <div style="font-size: 14px; color: #8892b0; font-weight: bold;">VISUAL BIOLOGICAL AGING METER</div>
-            <div class="bar-bg"><div class="bar-fill"></div></div>
-            <div style="color: {gauge_color}; font-weight: bold; font-size: 16px;">{gauge_label}</div>
-            <div style="font-size: 12px; color: #8892b0; margin-top: 4px;">Calculated Biological Deviation Delta: {round(age_delta, 1)} Years</div>
-        </div>
-
         <div class="box">
-            <div class="sec-title">1. METABOLIC REGULATION INFRASTRUCTURE</div>
+            <div class="sec-title">1. METABOLIC REGULATION SYSTEM</div>
             Fasting Glucose: <span class="val">{client_glucose} mg/dL ({glucose_status})</span><br>
-            <span class="ref-link">Evidence: American Diabetes Association (ADA) Diabetes Care Criteria.</span>
+            <em>Clinical Insight:</em> Ideal homeostatic regulation mitigates cellular protein glycation and preserves endothelial wall structures from structural decay.
         </div>
 
         <div class="box">
-            <div class="sec-title">2. CARDIOVASCULAR INFLAMMAGING SYSTEMS</div>
+            <div class="sec-title">2. CARDIOVASCULAR INFLAMMAGING INFRASTRUCTURE</div>
             High-Sensitivity CRP: <span class="val">{client_hs_crp} mg/L ({crp_status})</span><br>
-            <span class="ref-link">Evidence: AHA/CDC Consensus Statement on Inflammatory Markers.</span>
+            <em>Clinical Insight:</em> Low Systemic inflammation prevents micro-vascular stiffening and maintains biological protection over cell renewal architectures.
         </div>
 
         <div class="box">
             <div class="sec-title">3. BIOSYNTHETIC ORGAN VITALITY MATRIX</div>
             Serum Albumin: <span class="val">{client_albumin} g/dL ({albumin_status})</span> &nbsp;|&nbsp;
             Creatinine: <span class="val">{client_creatinine} mg/dL ({kidney_status})</span> &nbsp;|&nbsp;
-                st.markdown("---")
+            Alkaline Phosphatase (ALP): <span class="val">{client_alp} U/L ({liver_status})</span><br>
+            <em>Clinical Insight:</em> Reflects clear cellular filtration balance and robust liver-biosynthetic reserve critical to whole-body protein homeostasis.
+        </div>
+
+        <div class="box">
+            <div class="sec-title">4. HEMATOLOGICAL & CELLULAR UNIFORMITY CLOCK</div>
+            WBC Count: <span class="val">{client_wbc} cells/mcL</span> &nbsp;|&nbsp;
+            Lymphocyte: <span class="val">{client_lymph}%</span> &nbsp;|&nbsp;
+            RDW: <span class="val">{client_rdw}%</span> &nbsp;|&nbsp;
+            MCV: <span class="val">{client_mcv} fL</span> ({blood_status})<br>
+            <em>Clinical Insight:</em> Evaluates cell-size variability and adaptive immune resilience thresholds to identify underlying markers of immune system aging.
+        </div>
+
+        <div class="disclaimer">
+            <strong>IMPORTANT CLINICAL DISCLAIMER:</strong> This automated software audit is compiled exclusively for longevity wellness metrics and educational tracking. It is completely independent of specific drug or diet prescriptions. Always consult your practicing healthcare professional for definitive physical evaluations.
+        </div>
+    </body>
+    </html>
+    """
+
+    st.markdown("---")
     st.subheader("📩 Download Official Professional Color Report")
     st.download_button(
         label="Download Full 9-Biomarker Color Report",
         data=html_report,
         file_name=f"{patient_name if patient_name else 'Client'}_Longevity_Report.html",
         mime="text/html"
-    )        
+    )
+        
 st.markdown("---")
 st.caption("⚠️ DEMO VERSION ONLY - NOT FOR CLINICAL USE. This website is currently under development for an academic validation project. Do not input real medical patient records.")
-
