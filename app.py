@@ -172,3 +172,15 @@ if st.button("Generate Bio-Age Report"):
             <div class="sec-title">3. BIOSYNTHETIC ORGAN VITALITY MATRIX</div>
             Serum Albumin: <span class="val">{client_albumin} g/dL ({albumin_status})</span> &nbsp;|&nbsp;
             Creatinine: <span class="val">{client_creatinine} mg/dL ({kidney_status})</span> &nbsp;|&nbsp;
+                st.markdown("---")
+    st.subheader("📩 Download Official Professional Color Report")
+    st.download_button(
+        label="Download Full 9-Biomarker Color Report",
+        data=html_report,
+        file_name=f"{patient_name if patient_name else 'Client'}_Longevity_Report.html",
+        mime="text/html"
+    )
+        
+st.markdown("---")
+st.caption("⚠️ DEMO VERSION ONLY - NOT FOR CLINICAL USE. This website is currently under development for an academic validation project. Do not input real medical patient records.")
+
