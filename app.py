@@ -9,20 +9,30 @@ st.title("🧬 Longevity & Anti-Aging Bio-Clock Analytics")
 st.write("Enter patient biomarker data below to analyze clinical risks and biological aging.")
 organization_name = st.text_input("Authorized Clinician / Clinic / Hospital Name", placeholder="Global Longevity Clinic")
 # 2. AI Computational Engine Setup
+# 2. AI Computational Engine Setup (9-Marker Programmatic Matrix)
 @st.cache_resource
 def train_ai_model():
     np.random.seed(42)
     n_samples = 1000
     chronological_age = np.random.uniform(20, 80, n_samples)
+    
+    # Simulating 9 PhenoAge Markers based on CDC NHANES trends
     albumin = 4.8 - (chronological_age * 0.015) + np.random.normal(0, 0.2, n_samples)
     glucose = 85 + (chronological_age * 0.4) + np.random.normal(0, 10, n_samples)
     hs_crp = 0.5 + (chronological_age * 0.04) + np.random.normal(0, 0.8, n_samples)
+    creatinine = 0.7 + (chronological_age * 0.005) + np.random.normal(0, 0.1, n_samples)
+    alp = 50 + (chronological_age * 0.5) + np.random.normal(0, 12, n_samples)
+    wbc = 5.5 + (chronological_age * 0.02) + np.random.normal(0, 1.2, n_samples)
+    lymph = 35 - (chronological_age * 0.1) + np.random.normal(0, 4, n_samples)
+    rdw = 12.0 + (chronological_age * 0.02) + np.random.normal(0, 0.5, n_samples)
+    mcv = 88.0 + np.random.normal(0, 3, n_samples)
 
     dataset = pd.DataFrame({
-        'Chronological_Age': chronological_age, 'Albumin': albumin,
-        'Glucose': glucose, 'hs_CRP': hs_crp
+        'Chronological_Age': chronological_age, 'Albumin': albumin, 'Glucose': glucose, 'hs_CRP': hs_crp,
+        'Creatinine': creatinine, 'ALP': alp, 'WBC': wbc, 'Lymph': lymph, 'RDW': rdw, 'MCV': mcv
     })
-    X = dataset[['Albumin', 'Glucose', 'hs_CRP']]
+    
+    X = dataset[['Albumin', 'Glucose', 'hs_CRP', 'Creatinine', 'ALP', 'WBC', 'Lymph', 'RDW', 'MCV']]
     y = dataset['Chronological_Age']
     
     model = RandomForestRegressor(n_estimators=100, random_state=42)
@@ -31,214 +41,134 @@ def train_ai_model():
 
 ai_clock = train_ai_model()
 
-# 3. Clinical Data Input Fields
+# 3. Clinical Data Input Fields (Expanded to 9 Core Biomarkers)
 st.markdown("### 📋 Patient Biomarker Data Input")
 patient_name = st.text_input("Patient Name", value="")
 client_age = st.number_input("Chronological Age (Passport Age)", min_value=1, max_value=120, value=30)
-client_albumin = st.number_input("Albumin Level (g/dL)", min_value=1.0, max_value=10.0, value=4.2)
-client_glucose = st.number_input("Fasting Glucose Level (mg/dL)", min_value=30.0, max_value=500.0, value=90.0)
-client_hs_crp = st.number_input("C-Reactive Protein / hs-CRP (mg/L)", min_value=0.0, max_value=50.0, value=0.8)
+
+col1, col2, col3 = st.columns(3)
+with col1:
+    client_albumin = st.number_input("Albumin Level (g/dL)", min_value=1.0, max_value=10.0, value=4.2)
+    client_creatinine = st.number_input("Creatinine Level (mg/dL)", min_value=0.1, max_value=15.0, value=0.9)
+    client_lymph = st.number_input("Lymphocyte (%)", min_value=1.0, max_value=100.0, value=30.0)
+with col2:
+    client_glucose = st.number_input("Fasting Glucose (mg/dL)", min_value=30.0, max_value=500.0, value=90.0)
+    client_alp = st.number_input("ALP Level (U/L)", min_value=10.0, max_value=1000.0, value=70.0)
+    client_rdw = st.number_input("RDW (%)", min_value=5.0, max_value=50.0, value=13.0)
+with col3:
+    client_hs_crp = st.number_input("hs-CRP Level (mg/L)", min_value=0.0, max_value=50.0, value=0.8)
+    client_wbc = st.number_input("WBC Count (cells/mcL)", min_value=1000.0, max_value=50000.0, value=6000.0)
+    client_mcv = st.number_input("MCV Level (fL)", min_value=50.0, max_value=150.0, value=88.0)
 
 # 4. Automated Report Generation Logic
 if st.button("Generate Bio-Age Report"):
-    new_client_data = pd.DataFrame([[client_albumin, client_glucose, client_hs_crp]], columns=['Albumin', 'Glucose', 'hs_CRP'])
+    new_client_data = pd.DataFrame(
+        [[client_albumin, client_glucose, client_hs_crp, client_creatinine, client_alp, client_wbc, client_lymph, client_rdw, client_mcv]], 
+        columns=['Albumin', 'Glucose', 'hs_CRP', 'Creatinine', 'ALP', 'WBC', 'Lymph', 'RDW', 'MCV']
+    )
     calculated_bio_age = ai_clock.predict(new_client_data)
-    final_bio_age = round(calculated_bio_age[0], 1)
+    final_bio_age = round(calculated_bio_age, 1)
     
     st.markdown("---")
     st.subheader(f"📊 Longevity Audit Report for {patient_name if patient_name else 'Valued Client'}")
     st.metric(label="Calculated Biological Age", value=f"{final_bio_age} Years Old")
     
-    # --- SECTION A: FASTING GLUCOSE ---
-    if client_glucose <= 100:
-        glucose_level = "OPTIMAL METABOLIC HEALTH"
-        glucose_insight = "Glycemic regulation is within the ideal longevity zone. Efficient cellular glucose uptake protects vascular endothelial integrity."
-        glucose_control = "Maintain current metabolic baseline. Continue monitoring glycemic variance for long-term physiological stability."
-        glucose_color = "success"
-    elif 100 < client_glucose <= 125:
-        glucose_level = "EARLY METABOLIC ELEVATION (Suboptimal Glycemic Baseline)"
-        glucose_insight = f"Fasting glucose is elevated at {client_glucose} mg/dL, indicating early-stage insulin resistance. Prolonged extracellular glucose accelerates micro-vascular aging."
-        glucose_control = "Initiate lifestyle modifications and carbohydrate control. Target re-establishing fasting baseline below 100 mg/dL under expert guidance."
-        glucose_color = "warning"
+    # Mathematical Gauge Calculation for the Graph
+    age_delta = final_bio_age - client_age
+    if age_delta < -2:
+        gauge_color = "#2ecc71"  # Green
+        gauge_label = "YOUNGER THAN PASSPORT AGE (Optimal Cell Health)"
+        gauge_percent = 25
+    elif -2 <= age_delta <= 2:
+        gauge_color = "#f39c12"  # Orange
+        gauge_label = "MATCHES PASSPORT AGE (Standard Cellular Aging)"
+        gauge_percent = 50
     else:
-        glucose_level = "CRITICAL METABOLIC ELEVATION (High Metabolic Risk)"
-        glucose_insight = f"Fasting glucose is critically high at {client_glucose} mg/dL, triggering systemic protein glycation (AGEs) which structures vascular decline."
-        glucose_control = "Urgent medical review recommended. Aggressively minimize overall glycemic load to re-establish homeostatic biological control."
-        glucose_color = "error"
+        gauge_color = "#e74c3c"  # Red
+        gauge_label = "OLDER THAN PASSPORT AGE (Accelerated Cellular Aging)"
+        gauge_percent = 75
 
-    # --- SECTION B: hs-CRP (INFLAMMATION) ---
-    if client_hs_crp <= 1.0:
-        crp_level = "OPTIMAL INFLAMMATORY STATUS (Low Cellular Aging)"
-        crp_insight = f"Systemic inflammation is minimal at {client_hs_crp} mg/L, creating an ideal low-stress cellular environment that preserves long-term tissue youthfulness."
-        crp_control = "Maintain an antioxidant-rich lifestyle pattern to protect mitochondrial health from chronic oxidative damage."
-        crp_color = "success"
-    elif 1.0 < client_hs_crp <= 3.0:
-        crp_level = "MODERATE SYSTEMIC INFLAMMATION (Intermediate Aging Risk)"
-        crp_insight = f"Inflammation is elevated at {client_hs_crp} mg/L, signaling low-grade chronic 'inflammaging' that slowly stresses cellular renewal pathways."
-        crp_control = "Focus on eliminating industrial seed oils and environmental triggers. Optimize biological stress recovery protocols immediately."
-        crp_color = "warning"
-    else:
-        crp_level = "CRITICAL SYSTEMIC INFLAMMATION (High Biological Aging Risk)"
-        crp_insight = f"Inflammation is high at {client_hs_crp} mg/L. Chronic systemic stress at this tier accelerates the shortening of biological telomeres."
-        crp_control = "Prioritize an aggressive clinical protocol to clear systemic physiological inflammation. Immediate healthcare collaboration is advised."
-        crp_color = "error"
+    # Dynamic Visual Gauge Graph
+    st.markdown("### 📈 Biological Age Aging Gauge")
+    st.markdown(f"""
+        <div style="width: 100%; background-color: #112240; border-radius: 10px; padding: 20px; border: 1px solid #233554; text-align: center;">
+            <div style="font-size: 16px; color: #8892b0; margin-bottom: 10px; font-weight: bold;">AGING RATE PROFILE</div>
+            <div style="width: 100%; background-color: #233554; border-radius: 20px; height: 25px; position: relative; margin: 15px 0;">
+                <div style="background-color: {gauge_color}; width: {gauge_percent}%; height: 100%; border-radius: 20px;"></div>
+            </div>
+            <div style="font-size: 16px; color: {gauge_color}; font-weight: bold;">{gauge_label}</div>
+            <div style="font-size: 13px; color: #8892b0; margin-top: 5px;">Age Deviation Delta: {round(age_delta, 1)} Years</div>
+        </div>
+    """, unsafe_allow_html=True)
 
-    # --- SECTION C: ALBUMIN (ORGAN VITALITY) ---
-    if client_albumin > 3.5:
-        albumin_level = "OPTIMAL ORGAN VITALITY & PROTEIN STATUS"
-        albumin_insight = f"Serum albumin is strong at {client_albumin} g/dL, reflecting robust liver biosynthetic capacity and optimal systemic protein status."
-        albumin_control = "Maintain adequate clean protein assimilation and gut health to support continued organ and tissue homeostasis."
-        albumin_color = "success"
-    else:
-        albumin_level = "SUBOPTIMAL ORGAN VITALITY (Accelerated Decline Baseline)"
-        albumin_insight = f"Serum albumin is low at {client_albumin} g/dL, signaling potential amino acid malabsorption, subclinical liver/kidney strain, or high metabolic stress."
-        albumin_control = "Improve functional dietary protein intake and execute a comprehensive gut microbiome assessment to reverse systemic decline."
-        albumin_color = "error"
+    # Reference Ranges logic for 9 Markers
+    glucose_status = "OPTIMAL" if client_glucose <= 100 else ("SUBOPTIMAL (ADA Guideline)" if client_glucose <= 125 else "CRITICAL (ADA Guideline)")
+    crp_status = "OPTIMAL" if client_hs_crp <= 1.0 else ("SUBOPTIMAL (AHA/CDC Criteria)" if client_hs_crp <= 3.0 else "CRITICAL (AHA/CDC Criteria)")
+    albumin_status = "OPTIMAL" if client_albumin > 3.5 else "SUBOPTIMAL (NKF Standard)"
+    kidney_status = "OPTIMAL" if client_creatinine <= 1.2 else "SUBOPTIMAL (NKF Reference)"
+    liver_status = "OPTIMAL" if client_alp <= 147 else "SUBOPTIMAL (Medscape Criteria)"
+    wbc_status = "OPTIMAL" if 4500 <= client_wbc <= 11000 else "SUBOPTIMAL (Cleveland Clinic)"
+    lymph_status = "OPTIMAL" if 20 <= client_lymph <= 40 else "SUBOPTIMAL (NIH Reference)"
+    rdw_status = "OPTIMAL" if client_rdw <= 14.5 else "SUBOPTIMAL (AACC Criteria)"
+    mcv_status = "OPTIMAL" if 80 <= client_mcv <= 100 else "SUBOPTIMAL (Mayo Clinic Reference)"
 
-    # --- DISPLAY ALL RESULTS ON SCREEN ---
-    st.markdown("### 🩺 Clinical Biomarker & Longevity Analysis")
-    
-    if glucose_color == "success": st.success(f"**Glucose Status:** {glucose_level}")
-    elif glucose_color == "warning": st.warning(f"**Glucose Status:** {glucose_level}")
-    else: st.error(f"**Glucose Status:** {glucose_level}")
-    st.write(f"**Physiological Insight:** {glucose_insight}")
-    st.write(f"**Actionable Control Protocol:** {glucose_control}")
-    
-    st.markdown("---")
-    
-    if crp_color == "success": st.success(f"**Inflammation Status:** {crp_level}")
-    elif crp_color == "warning": st.warning(f"**Inflammation Status:** {crp_level}")
-    else: st.error(f"**Inflammation Status:** {crp_level}")
-    st.write(f"**Physiological Insight:** {crp_insight}")
-    st.write(f"**Actionable Control Protocol:** {crp_control}")
-    
-    st.markdown("---")
+    st.markdown("### 🩺 Clinical Biomarker Systems Analysis")
+    st.info(f"**Metabolic Control:** Glucose: {glucose_status}")
+    st.info(f"**Inflammatory Status:** hs-CRP: {crp_status}")
+    st.info(f"**Organ Vitality Matrix:** Kidney: {kidney_status} | Liver: {liver_status} | Albumin: {albumin_status}")
+    st.info(f"**Cellular Clock:** WBC: {wbc_status} | Lymphocyte: {lymph_status} | RDW: {rdw_status} | MCV: {mcv_status}")
 
-    if albumin_color == "success": st.success(f"**Organ Vitality Status:** {albumin_level}")
-    else: st.error(f"**Organ Vitality Status:** {albumin_level}")
-    st.write(f"**Physiological Insight:** {albumin_insight}")
-    st.write(f"**Actionable Control Protocol:** {albumin_control}")
-
-    # Generating the downloadable custom report content (Safely Inside the Button block)
-       # Luxury Layout with Dark Navy Blue background and Gold text accents
+    # Luxury HTML Report Layout
     html_report = f"""
     <html>
     <head>
         <meta charset="UTF-8">
         <style>
-            body {{
-                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                background-color: #0a192f;
-                color: #ffffff;
-                padding: 40px;
-            }}
-            .header {{
-                text-align: center;
-                border-bottom: 2px solid #c5a059;
-                padding-bottom: 20px;
-                margin-bottom: 30px;
-            }}
-            .title {{
-                color: #c5a059;
-                font-size: 28px;
-                font-weight: bold;
-                letter-spacing: 1px;
-            }}
-            .meta-info {{
-                font-size: 16px;
-                margin-top: 10px;
-                color: #8892b0;
-            }}
-            .metric-box {{
-                background-color: #112240;
-                border-radius: 8px;
-                padding: 20px;
-                margin-bottom: 25px;
-                border-left: 5px solid #c5a059;
-            }}
-            .section-title {{
-                font-size: 20px;
-                color: #c5a059;
-                margin-bottom: 10px;
-                font-weight: bold;
-            }}
-            .badge {{
-                display: inline-block;
-                padding: 6px 12px;
-                border-radius: 4px;
-                font-size: 14px;
-                font-weight: bold;
-                color: #ffffff;
-                margin-bottom: 10px;
-            }}
-            .insight {{
-                font-size: 15px;
-                line-height: 1.6;
-                color: #e2e8f0;
-                margin-bottom: 10px;
-            }}
-            .protocol {{
-                font-size: 15px;
-                line-height: 1.6;
-                color: #64ffda;
-                font-style: italic;
-            }}
-            .disclaimer {{
-                font-size: 12px;
-                color: #8892b0;
-                text-align: justify;
-                margin-top: 40px;
-                border-top: 1px solid #233554;
-                padding-top: 15px;
-            }}
+            body {{ font-family: Arial, sans-serif; background-color: #0a192f; color: #ffffff; padding: 40px; }}
+            .header {{ text-align: center; border-bottom: 2px solid #c5a059; padding-bottom: 20px; margin-bottom: 30px; }}
+            .title {{ color: #c5a059; font-size: 26px; font-weight: bold; }}
+            .meta-info {{ font-size: 15px; margin-top: 10px; color: #8892b0; line-height: 1.6; }}
+            .graph-container {{ background-color: #112240; border-radius: 8px; padding: 20px; margin-bottom: 25px; text-align: center; border: 1px solid #233554; }}
+            .bar-bg {{ background-color: #233554; border-radius: 15px; height: 20px; width: 100%; margin: 15px 0; }}
+            .bar-fill {{ background-color: {gauge_color}; width: {gauge_percent}%; height: 100%; border-radius: 15px; }}
+            .box {{ background-color: #112240; border-radius: 8px; padding: 18px; margin-bottom: 20px; border-left: 4px solid #c5a059; }}
+            .sec-title {{ font-size: 18px; color: #c5a059; font-weight: bold; margin-bottom: 8px; }}
+            .val {{ color: #64ffda; font-weight: bold; }}
+            .ref-link {{ color: #8892b0; font-size: 12px; font-style: italic; }}
+            .disclaimer {{ font-size: 12px; color: #8892b0; text-align: justify; margin-top: 30px; border-top: 1px solid #233554; padding-top: 15px; }}
         </style>
     </head>
     <body>
         <div class="header">
-            <div class="title">BIOLOGICAL AGE & LONGEVITY AUDIT</div>
-                        <div class="meta-info">
-                <strong>Issuing Clinic/Doctor:</strong> {organization_name} <br><br>
+            <div class="title">ADVANCED 9-BIOMARKER LONGEVITY AUDIT</div>
+            <div class="meta-info">
+                <strong>Issuing Clinic/Doctor:</strong> {organization_name if organization_name else 'Global Longevity Clinic'} <br>
                 <strong>Patient Name:</strong> {patient_name if patient_name else 'Valued Client'} &nbsp;|&nbsp; 
                 <strong>Chronological Age:</strong> {client_age} Years &nbsp;|&nbsp; 
                 <strong>Calculated Biological Age:</strong> {final_bio_age} Years
             </div>
-
         </div>
 
-        <div class="metric-box">
-            <div class="section-title">1. METABOLIC ANALYSIS (Fasting Glucose)</div>
-            <div class="insight"><strong>Physiological Insight:</strong> {glucose_insight}</div>
-            <div class="protocol"><strong>Actionable Control Protocol:</strong> {glucose_control}</div>
+        <div class="graph-container">
+            <div style="font-size: 14px; color: #8892b0; font-weight: bold;">VISUAL BIOLOGICAL AGING METER</div>
+            <div class="bar-bg"><div class="bar-fill"></div></div>
+            <div style="color: {gauge_color}; font-weight: bold; font-size: 16px;">{gauge_label}</div>
+            <div style="font-size: 12px; color: #8892b0; margin-top: 4px;">Calculated Biological Deviation Delta: {round(age_delta, 1)} Years</div>
         </div>
 
-        <div class="metric-box">
-            <div class="section-title">2. INFLAMMATORY ANALYSIS (hs-CRP)</div>
-            <div class="insight"><strong>Physiological Insight:</strong> {crp_insight}</div>
-            <div class="protocol"><strong>Actionable Control Protocol:</strong> {crp_control}</div>
+        <div class="box">
+            <div class="sec-title">1. METABOLIC REGULATION INFRASTRUCTURE</div>
+            Fasting Glucose: <span class="val">{client_glucose} mg/dL ({glucose_status})</span><br>
+            <span class="ref-link">Evidence: American Diabetes Association (ADA) Diabetes Care Criteria.</span>
         </div>
 
-        <div class="metric-box">
-            <div class="section-title">3. ORGAN VITALITY ANALYSIS (Serum Albumin)</div>
-            <div class="insight"><strong>Physiological Insight:</strong> {albumin_insight}</div>
-            <div class="protocol"><strong>Actionable Control Protocol:</strong> {albumin_control}</div>
+        <div class="box">
+            <div class="sec-title">2. CARDIOVASCULAR INFLAMMAGING SYSTEMS</div>
+            High-Sensitivity CRP: <span class="val">{client_hs_crp} mg/L ({crp_status})</span><br>
+            <span class="ref-link">Evidence: AHA/CDC Consensus Statement on Inflammatory Markers.</span>
         </div>
 
-        <div class="disclaimer">
-            <strong>IMPORTANT CLINICAL DISCLAIMER:</strong> This automated digital analysis is for educational and longevity wellness tracking purposes only. It does not contain or constitute a medical prescription or specific clinical treatment. Always consult your practicing healthcare provider before initiating lifestyle modifications.
-        </div>
-    </body>
-    </html>
-    """
-
-    st.markdown("---")
-    st.subheader("📩 Download Official Professional Color Report")
-    st.download_button(
-        label="Download Full Clinical Color Report",
-        data=html_report,
-        file_name=f"{patient_name if patient_name else 'Client'}_Longevity_Report.html",
-        mime="text/html"
-    )
-
-        
-st.markdown("---")
-st.caption("⚠️ DEMO VERSION ONLY - NOT FOR CLINICAL USE. This website is currently under development for an academic validation project. Do not input real medical patient records.")
+        <div class="box">
+            <div class="sec-title">3. BIOSYNTHETIC ORGAN VITALITY MATRIX</div>
+            Serum Albumin: <span class="val">{client_albumin} g/dL ({albumin_status})</span> &nbsp;|&nbsp;
+            Creatinine: <span class="val">{client_creatinine} mg/dL ({kidney_status})</span> &nbsp;|&nbsp;
