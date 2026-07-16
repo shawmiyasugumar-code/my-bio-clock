@@ -145,6 +145,13 @@ if st.button("Generate Bio-Age Report"):
                 <strong>Calculated Biological Age:</strong> {final_bio_age} Years
             </div>
         </div>
+                <div class="graph-container">
+            <div style="font-size: 14px; color: #8892b0; font-weight: bold; text-align: center; margin-bottom: 10px;">VISUAL BIOLOGICAL AGING METER</div>
+            <div class="bar-bg" style="background-color: #233554; border-radius: 15px; height: 20px; width: 100%; margin: 15px 0;"><div class="bar-fill" style="background-color: f_string_color; width: f_string_percent%; height: 100%; border-radius: 15px;"></div></div>
+            <div style="color: f_string_color; font-weight: bold; font-size: 16px; text-align: center;">f_string_label</div>
+            <div style="font-size: 12px; color: #8892b0; margin-top: 4px; text-align: center;">Calculated Biological Deviation Delta: f_string_delta Years</div>
+        </div>
+
 
         <div class="box">
             <div class="sec-title">1. METABOLIC REGULATION SYSTEM</div>
