@@ -5,7 +5,7 @@ from sklearn.ensemble import RandomForestRegressor
 
 # 1. Website Frontend Configuration
 st.set_page_config(page_title="Longevity Bio-Clock", layout="centered")
-st.title("🧬 Longevity & Anti-Aging Bio-Clock Analytics")
+st.markdown("<h1 style='text-align: center; font-size: 26px; white-space: nowrap;'>🧬 Longevity & Anti-Aging Bio-Clock Analytics</h1>", unsafe_allow_html=True)
 st.write("Enter biomarker data below to analyze clinical risks and biological aging.")
 
 # Custom Organization Name Placeholder (The Illusion Box)
