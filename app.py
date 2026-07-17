@@ -46,7 +46,7 @@ ai_clock = train_ai_model()
 # 3. Clinical Data Input Fields with Advanced Sex-Specific Controls
 st.markdown("### 📋 Patient Biomarker Data Input")
 patient_name = st.text_input("Patient Name", value="")
-patient_gender = st.selectbox("Patient Biological Sex", ["Female", "Male"])
+patient_gender = st.selectbox("Patient Biological Sex", ["Female", "Male"], index=None, placeholder="Select Patient Gender")
 client_age = st.number_input("Chronological Age (Passport Age)", min_value=1, max_value=120, value=30, step=1)
 
 col1, col2, col3 = st.columns(3)
