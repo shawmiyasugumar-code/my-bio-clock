@@ -43,24 +43,29 @@ def train_ai_model():
 
 ai_clock = train_ai_model()
 
-# 3. Clinical Data Input Fields (Expanded to 9 Core Biomarkers)
+# 3. Clinical Data Input Fields with Gender Selection & Smart +/- Controls
 st.markdown("### 📋 Patient Biomarker Data Input")
 patient_name = st.text_input("Patient Name", value="")
-client_age = st.number_input("Chronological Age (Passport Age)", min_value=1, max_value=120, value=30)
+patient_gender = st.selectbox("Patient Biological Sex", ["Female", "Male"])
+client_age = st.number_input("Chronological Age (Passport Age)", min_value=1, max_value=120, value=30, step=1)
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    client_albumin = st.number_input("Albumin Level (g/dL)", min_value=1.0, max_value=10.0, value=4.2)
-    client_creatinine = st.number_input("Creatinine Level (mg/dL)", min_value=0.1, max_value=15.0, value=0.9)
-    client_lymph = st.number_input("Lymphocyte (%)", min_value=1.0, max_value=100.0, value=30.0)
+    client_albumin = st.number_input("Albumin Level (g/dL)", min_value=1.0, max_value=10.0, value=4.2, step=0.1)
+    
+    # Smart Gender-Based Creatinine Baseline
+    default_creat = 0.8 if patient_gender == "Female" else 0.9
+    client_creatinine = st.number_input("Creatinine Level (mg/dL)", min_value=0.1, max_value=15.0, value=default_creat, step=0.1)
+    client_lymph = st.number_input("Lymphocyte (%)", min_value=1.0, max_value=100.0, value=30.0, step=1.0)
 with col2:
-    client_glucose = st.number_input("Fasting Glucose (mg/dL)", min_value=30.0, max_value=500.0, value=90.0)
-    client_alp = st.number_input("ALP Level (U/L)", min_value=10.0, max_value=1000.0, value=70.0)
-    client_rdw = st.number_input("RDW (%)", min_value=5.0, max_value=50.0, value=13.0)
+    client_glucose = st.number_input("Fasting Glucose (mg/dL)", min_value=30.0, max_value=500.0, value=90.0, step=1.0)
+    client_alp = st.number_input("ALP Level (U/L)", min_value=10.0, max_value=1000.0, value=70.0, step=1.0)
+    client_rdw = st.number_input("RDW (%)", min_value=5.0, max_value=50.0, value=13.0, step=0.1)
 with col3:
-    client_hs_crp = st.number_input("hs-CRP Level (mg/L)", min_value=0.0, max_value=50.0, value=0.8)
-    client_wbc = st.number_input("WBC Count (cells/mcL)", min_value=1000.0, max_value=50000.0, value=6000.0)
-    client_mcv = st.number_input("MCV Level (fL)", min_value=50.0, max_value=150.0, value=88.0)
+    client_hs_crp = st.number_input("hs-CRP Level (mg/L)", min_value=0.0, max_value=50.0, value=0.8, step=0.1)
+    client_wbc = st.number_input("WBC Count (cells/mcL)", min_value=1000.0, max_value=50000.0, value=6000.0, step=100.0)
+    client_mcv = st.number_input("MCV Level (fL)", min_value=50.0, max_value=150.0, value=88.0, step=1.0)
+
 
 # 4. Automated Report Generation Logic
 if st.button("Generate Bio-Age Report"):
